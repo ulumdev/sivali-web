@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, Filter, Download } from 'lucide-react'
+import { Bell, ChevronDown, Download } from 'lucide-react'
 
 const Navbar = () => {
   return (

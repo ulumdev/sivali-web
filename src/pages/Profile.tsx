@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {
   Edit,
-  Check,
   FileText,
-  File,
   Building2,
   User,
   ExternalLink,
   SquareArrowOutUpRight,
-  X,
 } from "lucide-react";
 import type { Profile, ProfileResponse } from "../models/Profile";
 import UploadNPWPModal from "../new-components/UploadNpwpModal";
