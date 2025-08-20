@@ -1,0 +1,91 @@
+import TopJobChart from "../new-components/TopJobChart";
+import CardStat from "../new-components/CardStat";
+import BalanceCard from "../new-components/BalanceCard";
+import { Filter, DownloadCloud } from "lucide-react";
+
+export default function Dashboard() {
+  const jobData = [
+    { name: "Bartender", value: 450 },
+    { name: "UI Designer", value: 410 },
+    { name: "Room Attendance", value: 390 },
+  ];
+
+  return (
+    <>
+      {/* Row 1: filter bulan & export */}
+      <div className="flex justify-end mb-4">
+        <div className="flex items-center gap-3">
+          {/* Dropdown Status dengan icon Filter */}
+          <div className="relative">
+            <select
+              value=""
+              // onChange={(e) => {
+              //   setStatusFilter(e.target.value);
+              //   setCurrentPage(1); // reset ke page 1
+              // }}
+              className="appearance-none pr-10 pl-3 py-2 border rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option>Last month</option>
+              <option>This month</option>
+              <option>Last 3 months</option>
+              {/* <option value="Pilih Status">Pilih Status</option>
+              <option value="Semua">Semua</option>
+              <option value="Menunggu Pelamar">Menunggu Pelamar</option>
+              <option value="Sedang Berlangsung">Sedang Berlangsung</option> */}
+            </select>
+            {/* Icon Filter */}
+            <Filter className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 pointer-events-none" />
+          </div>
+          {/* <select className="border rounded-md px-3 py-2 bg-white text-sm">
+            <option>Last month</option>
+            <option>This month</option>
+            <option>Last 3 months</option>
+          </select> */}
+          <button className="flex items-center gap-2 px-3 py-2 border rounded-lg text-sm hover:bg-gray-100 bg-white">
+            <span>Export</span>
+            <DownloadCloud className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+
+      {/* Row 2 */}
+      <div className="flex gap-6 mb-4 h-[360px]">
+        {/* Chart */}
+        <div className="flex-1 bg-white rounded-lg shadow-sm p-6 border">
+          <TopJobChart
+            data={jobData}
+            value={140}
+            percentage={14}
+            isIncrease={false}
+          />
+        </div>
+
+        {/* Card Stats */}
+        <div className="w-60 flex flex-col gap-6 h-full">
+          <CardStat
+            title="Pekerja Aktif"
+            value="410"
+            percentage={14}
+            isIncrease
+          />
+          <CardStat
+            title="Job Posting Aktif"
+            value="178"
+            percentage={7}
+            isIncrease={false}
+          />
+        </div>
+      </div>
+
+      {/* Row 3 */}
+      <div className="flex gap-6">
+        <div className="flex-1">
+          <BalanceCard title="Balance" amount={6000000} isIncrease />
+        </div>
+        <div className="flex-1">
+          <BalanceCard title="Expense" amount={4000000} isIncrease={false} />
+        </div>
+      </div>
+    </>
+  );
+}
