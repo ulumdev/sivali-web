@@ -40,42 +40,44 @@ function Login() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col lg:flex-row h-screen">
       {/* Left Section */}
       <div
-        className="w-[27%] h-full bg-cover bg-bottom flex flex-col items-left px-16 py-16"
+        className="h-56 sm:h-64 md:h-auto lg:w-[27%] w-full 
+                  bg-cover bg-bottom flex flex-col 
+                  items-center justify-center 
+                  lg:items-start lg:justify-start 
+                  px-6 sm:px-10 md:px-16 py-6 sm:py-10 md:py-16"
         style={{ backgroundImage: "url('/images/auth-left-bg.png')" }}
       >
-        <div className="flex flex-col items-start">
-          {/* <div className="bg-white text-blue-600 font-bold px-2 py-1 rounded mb-4">
-            TALENT <span className="text-black">MATCH</span>
-          </div> */}
-          <img src="/images/logo.png" alt="Logo" className="w-40 h-auto mb-6" />
-          <h1 className="text-3xl font-bold leading-snug text-left text-white">
-            Selamat <br /> Datang di <br /> TalentMatch!
+        <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+          <img src="/images/logo-auth.png" alt="Logo" className="w-40 h-auto mb-6" />
+          <h1 className="text-2xl sm:text-3xl font-bold leading-snug text-white">
+            Selamat <br className="hidden sm:block" /> Datang di <br />{" "}
+            TalentMatch!
           </h1>
         </div>
-        {/* <img src="/images/logo.png" alt="Logo" className="w-40 h-auto" /> */}
       </div>
 
       {/* Right Section */}
       <div
-        className="w-[73%] h-full flex flex-col items-center bg-cover bg-bottom px-8 py-16 sm:px-16"
-        style={{ backgroundImage: "url('/images/auth-right-bg.png')" }} // export dari figma
+        className="flex-1 h-full flex flex-col items-center bg-cover bg-bottom px-6 sm:px-10 md:px-16 py-6 sm:py-10 md:py-16"
+        style={{ backgroundImage: "url('/images/auth-right-bg.png')" }}
       >
-        <div className="w-[60%] flex-1 flex flex-col mx-auto">
+        <div className="w-full max-w-md flex-1 flex flex-col">
           {/* Back Button */}
-          <button className="mb-6">
+          <button className="mb-6 self-start">
             <ArrowLeft className="w-6 h-6 text-gray-700" />
           </button>
 
           {/* Form */}
-          <h2 className="text-2xl font-bold mb-6 text-left">Masuk</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-left">
+            Masuk
+          </h2>
           <form
             className="flex flex-col justify-between h-full w-full"
             onSubmit={handleSubmit}
           >
-            {/* Form Inputs */}
             <div className="space-y-4">
               <input
                 type="text"
@@ -103,9 +105,7 @@ function Login() {
 
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
-            {/* Error Message */}
-            {/* Button & Register Link (selalu di bawah) */}
-            <div className="mb-10">
+            <div className="mt-8">
               <button
                 type="submit"
                 disabled={loading || !email || !password}
