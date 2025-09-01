@@ -1,12 +1,14 @@
-import './App.css'
+import "./App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile"; // nanti kita buat
-import Login from './pages/Login';
-import Register from './pages/Register';
-import VerifyEmail from './pages/VerifyEmail';
-import JobPostingActive from './pages/job-posting/JobActive';
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import VerifyEmail from "./pages/VerifyEmail";
+import JobPostingActive from "./pages/job-posting/JobActive";
+import JobPostingDraft from "./pages/job-posting/JobDraft";
+import JobPostingExpired from "./pages/job-posting/JobExpired";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -14,21 +16,30 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={token ? <Layout /> : <Navigate to="/login" replace />}>
+        <Route
+          path="/"
+          element={token ? <Layout /> : <Navigate to="/login" replace />}
+        >
           <Route index element={<Dashboard />} />
           <Route path="profile" element={<Profile />} />
           {/* Job Posting Sub Routes */}
-            <Route path="/job-posting/active" element={<JobPostingActive/>} />
-            <Route path="/job-posting/draft" element={<div>Job Posting Draft</div>} />
-            <Route path="/job-posting/expired" element={<div>Job Posting Expired</div>} />
+          <Route path="/job-posting/active" element={<JobPostingActive />} />
+          <Route path="/job-posting/draft" element={<JobPostingDraft />} />
+          <Route path="/job-posting/expired" element={<JobPostingExpired />} />
 
-            {/* Default redirect kalau akses /job-posting langsung */}
-            <Route path="/job-posting" element={<Navigate to="/job-posting/active" replace />} />
+          {/* Default redirect kalau akses /job-posting langsung */}
+          <Route
+            path="/job-posting"
+            element={<Navigate to="/job-posting/active" replace />}
+          />
           <Route path="attendance" element={<div>Attendance</div>} />
           <Route path="transaction" element={<div>Transaction</div>} />
         </Route>
         {/* Login page di luar layout */}
-        <Route path="/login" element={!token ? <Login /> : <Navigate to="/" replace />} />
+        <Route
+          path="/login"
+          element={!token ? <Login /> : <Navigate to="/" replace />}
+        />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
       </Routes>
@@ -36,4 +47,4 @@ function App() {
   );
 }
 
-export default App
+export default App;

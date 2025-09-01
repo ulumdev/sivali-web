@@ -12,7 +12,7 @@ export default function BalanceCard({
   isIncrease?: boolean;
 }) {
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm border flex items-center gap-4">
+    <div className="bg-white rounded-lg p-4 md:p-6 shadow-sm border flex items-center gap-4">
       <div className={clsx("p-4 rounded-lg", title === "Balance" ? "bg-blue-50 text-blue-600" : "bg-red-50 text-red-600")}>
         <Wallet size={28} />
       </div>

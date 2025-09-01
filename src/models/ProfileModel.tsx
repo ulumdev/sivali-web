@@ -57,7 +57,7 @@ export interface CompanyVerificationFile {
   npwp: string;
 }
 
-export interface Profile {
+export interface ProfileModel {
   id: string;
   createdAt: string;
   updatedAt: string;
@@ -85,5 +85,5 @@ export interface Profile {
 
 export interface ProfileResponse {
   ok: boolean;
-  data: Profile;
+  data: ProfileModel;
 }

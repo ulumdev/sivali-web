@@ -7,7 +7,7 @@ import {
   ExternalLink,
   SquareArrowOutUpRight,
 } from "lucide-react";
-import type { Profile, ProfileResponse } from "../models/Profile";
+import type { ProfileModel, ProfileResponse } from "../models/ProfileModel";
 import UploadNPWPModal from "../new-components/UploadNpwpModal";
 
 // ----------------------------
@@ -31,7 +31,7 @@ function Tooltip({
 }
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const [profile, setProfile] = useState<ProfileModel | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
