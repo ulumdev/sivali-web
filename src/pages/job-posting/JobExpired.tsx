@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Search,
   DownloadCloud,
@@ -17,6 +18,8 @@ export default function JobPostingExpired() {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 10;
+
+  const navigate = useNavigate();
 
   // Filter
   const filteredData = (jobsExpired ?? []).filter((job) => {
@@ -130,7 +133,9 @@ export default function JobPostingExpired() {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-center">
-                  <button className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    onClick={() => navigate(`/job-posting/expired/${job.id}`)}
+                    className="p-1 hover:bg-gray-100 rounded">
                     <Eye className="h-4 w-4 text-gray-500" />
                   </button>
                 </td>

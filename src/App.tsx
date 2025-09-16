@@ -1,4 +1,5 @@
 import "./App.css";
+
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Dashboard from "./pages/Dashboard";
@@ -9,6 +10,9 @@ import VerifyEmail from "./pages/VerifyEmail";
 import JobPostingActive from "./pages/job-posting/JobActive";
 import JobPostingDraft from "./pages/job-posting/JobDraft";
 import JobPostingExpired from "./pages/job-posting/JobExpired";
+import ExpiredDetail from "./pages/job-posting/ExpiredDetail";
+import CreateJobPosting from "./pages/job-posting/CreateJobPosting";
+import ActiveDetail from "./pages/job-posting/ActiveDetail";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -24,8 +28,11 @@ function App() {
           <Route path="profile" element={<Profile />} />
           {/* Job Posting Sub Routes */}
           <Route path="/job-posting/active" element={<JobPostingActive />} />
+          <Route path="/job-posting/active/:id" element={<ActiveDetail />} />
+          <Route path="/job-postings/create" element={<CreateJobPosting />} />
           <Route path="/job-posting/draft" element={<JobPostingDraft />} />
           <Route path="/job-posting/expired" element={<JobPostingExpired />} />
+          <Route path="/job-posting/expired/:id" element={<ExpiredDetail />} />
 
           {/* Default redirect kalau akses /job-posting langsung */}
           <Route

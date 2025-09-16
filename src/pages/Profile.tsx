@@ -73,7 +73,7 @@ export default function ProfilePage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold mb-4">{profile.name ?? "-"}</h2>
-        <button className="flex items-center gap-1 bg-blue-600 text-white text-md px-3 py-1 rounded hover:bg-blue-700">
+        <button className="flex items-center gap-1 bg-blue-600 text-white text-md px-3 py-1 rounded-md hover:bg-blue-700">
           <Edit size={14} />
           Edit
         </button>
