@@ -13,6 +13,7 @@ import JobPostingExpired from "./pages/job-posting/JobExpired";
 import ExpiredDetail from "./pages/job-posting/ExpiredDetail";
 import CreateJobPosting from "./pages/job-posting/CreateJobPosting";
 import ActiveDetail from "./pages/job-posting/ActiveDetail";
+import ListTransaction from "./pages/transaction/ListTransaction";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -40,7 +41,7 @@ function App() {
             element={<Navigate to="/job-posting/active" replace />}
           />
           <Route path="attendance" element={<div>Attendance</div>} />
-          <Route path="transaction" element={<div>Transaction</div>} />
+          <Route path="transaction" element={<ListTransaction />} />
         </Route>
         {/* Login page di luar layout */}
         <Route

@@ -3,50 +3,56 @@ import { useState } from "react";
 import { FileText, User } from "lucide-react";
 import { clsx } from "clsx";
 import { useJobDetail } from "../../hooks/useJobDetail";
+import { useJobWorkers } from "../../hooks/useJobWorkers";
 
 // Contoh dummy kandidat
-const candidates = [
-  {
-    id: "AD39",
-    tanggal: "25 Desember 2024",
-    nama: "Budi Santoso",
-    role: "Bartender",
-    alamat: "Jl. Raya No. 1, Surabaya",
-    jenisKelamin: "Laki-laki",
-    status: "Belum Konfirmasi",
-  },
-  {
-    id: "AD40",
-    tanggal: "25 Desember 2024",
-    nama: "Siti Aminah",
-    role: "Bartender",
-    alamat: "Jl. Raya No. 2, Surabaya",
-    jenisKelamin: "Perempuan",
-    status: "Waiting List",
-  },
-  {
-    id: "AD41",
-    tanggal: "25 Desember 2024",
-    nama: "Ahmad Fauzi",
-    role: "Bartender",
-    alamat: "Jl. Raya No. 2, Surabaya",
-    jenisKelamin: "Laki-laki",
-    status: "Waiting List",
-  },
-  {
-    id: "AD42",
-    tanggal: "25 Desember 2024",
-    nama: "Sari",
-    role: "Bartender",
-    alamat: "Jl. Raya No. 2, Surabaya",
-    jenisKelamin: "Perempuan",
-    status: "Waiting List",
-  },
-];
+// const candidates = [
+//   {
+//     id: "AD39",
+//     tanggal: "25 Desember 2024",
+//     nama: "Budi Santoso",
+//     role: "Bartender",
+//     alamat: "Jl. Raya No. 1, Surabaya",
+//     jenisKelamin: "Laki-laki",
+//     status: "Belum Konfirmasi",
+//   },
+//   {
+//     id: "AD40",
+//     tanggal: "25 Desember 2024",
+//     nama: "Siti Aminah",
+//     role: "Bartender",
+//     alamat: "Jl. Raya No. 2, Surabaya",
+//     jenisKelamin: "Perempuan",
+//     status: "Waiting List",
+//   },
+//   {
+//     id: "AD41",
+//     tanggal: "25 Desember 2024",
+//     nama: "Ahmad Fauzi",
+//     role: "Bartender",
+//     alamat: "Jl. Raya No. 2, Surabaya",
+//     jenisKelamin: "Laki-laki",
+//     status: "Waiting List",
+//   },
+//   {
+//     id: "AD42",
+//     tanggal: "25 Desember 2024",
+//     nama: "Sari",
+//     role: "Bartender",
+//     alamat: "Jl. Raya No. 2, Surabaya",
+//     jenisKelamin: "Perempuan",
+//     status: "Waiting List",
+//   },
+// ];
 
 export default function ActiveDetail() {
   const { id } = useParams();
   const { jobDetail, loading, error } = useJobDetail(id ?? "");
+  const {
+    workers,
+    loading: workersLoading,
+    error: workersError,
+  } = useJobWorkers(id);
 
   const [activeTab, setActiveTab] = useState<"detail" | "kandidat">("detail");
 
@@ -218,6 +224,12 @@ export default function ActiveDetail() {
         // Kandidat Tab
         <div className="space-y-6">
           <div className="overflow-x-auto border rounded-lg shadow-sm">
+            {workersLoading && <p>Loading kandidat...</p>}
+            {workersError && <p className="text-red-500">{workersError}</p>}
+            {!workersLoading && workers.length === 0 && (
+              <p>Tidak ada kandidat</p>
+            )}
+            {workers.length > 0 && (
             <table className="min-w-full border-collapse">
               <thead className="bg-gray-100 text-left text-sm font-medium bg-white border-b">
                 <tr>
@@ -231,30 +243,31 @@ export default function ActiveDetail() {
                 </tr>
               </thead>
               <tbody className="text-sm bg-white text-left">
-                {candidates.map((c) => (
-                  <tr key={c.id} className="border-t">
-                    <td className="px-4 py-2">{c.id}</td>
-                    <td className="px-4 py-2">{c.tanggal}</td>
-                    <td className="px-4 py-2">{c.nama}</td>
-                    <td className="px-4 py-2">{c.role}</td>
-                    <td className="px-4 py-2">{c.alamat}</td>
-                    <td className="px-4 py-2">{c.jenisKelamin}</td>
-                    <td className="px-4 py-3">
-                      <span
-                        className={clsx(
-                          "px-2 py-1 rounded text-xs font-medium",
-                          c.status === "Waiting List"
-                            ? "bg-orange-100 text-orange-600"
-                            : "bg-blue-100 text-blue-600"
-                        )}
-                      >
-                        {c.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                {workers.map((w) => (
+                    <tr key={w.id} className="border-t">
+                      <td className="px-4 py-2">{w.id}</td>
+                      <td className="px-4 py-2">{w.createdAt}</td>
+                      <td className="px-4 py-2">{w.user?.firstName + " " + w.user?.lastName}</td>
+                      <td className="px-4 py-2">{w.isAccepted}</td>
+                      <td className="px-4 py-2">{w.user?.personalInfo?.userAddress?.name}</td>
+                      <td className="px-4 py-2">{w.user?.personalInfo?.gender}</td>
+                      <td className="px-4 py-3">
+                        <span
+                          className={clsx(
+                            "px-2 py-1 rounded text-xs font-medium",
+                            w.status === "Waiting List"
+                              ? "bg-orange-100 text-orange-600"
+                              : "bg-blue-100 text-blue-600"
+                          )}
+                        >
+                          {w.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
+            )}
           </div>
         </div>
       )}
