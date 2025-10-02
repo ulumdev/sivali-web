@@ -82,7 +82,7 @@ function ConfirmModal({
 export default function AttendanceDetail() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { attendanceDetail, loading, error, refetch } = useAttendanceDetail(
+  const { attendanceDetail, loading, error } = useAttendanceDetail(
     id ?? ""
   );
   // refetch data after action

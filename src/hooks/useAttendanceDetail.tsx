@@ -62,5 +62,5 @@ export function useAttendanceDetail(attId: string | undefined) {
     fetchData();
   }, [fetchData]);
 
-  return { attendanceDetail, loading, error, refetch: fetchData };
+  return { attendanceDetail, loading, error};
 }
