@@ -11,6 +11,10 @@ export interface Role {
   role?: string | null;
 }
 
+export interface Count {
+  worker?: number | null;
+}
+
 export interface Worker {
   id?: string | null;
   userId?: string | null;
@@ -41,8 +45,9 @@ export interface JobPostingModel {
   workerNumber?: number | null;
   paymentStatus?: string | null;
   totalPaid?: string | null;
-  role?: Role | null;
   jobLocation?: JobLocation | null;
+  role?: Role | null;
+  _count?: Count | null;
   worker?: Worker[] | null;
   jobAttendanceList?: JobAttendance[] | null;
 }

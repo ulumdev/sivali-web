@@ -14,6 +14,8 @@ import ExpiredDetail from "./pages/job-posting/ExpiredDetail";
 import CreateJobPosting from "./pages/job-posting/CreateJobPosting";
 import ActiveDetail from "./pages/job-posting/ActiveDetail";
 import ListTransaction from "./pages/transaction/ListTransaction";
+import ListAttendance from "./pages/attendance/ListAttendance";
+import AttendanceDetail from "./pages/attendance/AttendanceDetail";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -40,8 +42,11 @@ function App() {
             path="/job-posting"
             element={<Navigate to="/job-posting/active" replace />}
           />
-          <Route path="attendance" element={<div>Attendance</div>} />
-          <Route path="transaction" element={<ListTransaction />} />
+          <Route path="/attendance" element={<ListAttendance />} />
+          {/* Attendance Sub Routes */}
+          <Route path="/attendance/:id" element={<AttendanceDetail />} />
+          
+          <Route path="/transaction" element={<ListTransaction />} />
         </Route>
         {/* Login page di luar layout */}
         <Route

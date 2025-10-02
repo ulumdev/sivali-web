@@ -39,6 +39,14 @@ export async function apiPut<T>(url: string, body: any): Promise<T> {
   });
 }
 
+export async function apiPatch<T>(url: string, body: any): Promise<T> {
+  return apiRequest<T>(url, {
+    method: "PATCH",
+    body: JSON.stringify(body),
+  });
+}
+
+
 export async function apiDelete<T>(url: string): Promise<T> {
   return apiRequest<T>(url, { method: "DELETE" });
 }

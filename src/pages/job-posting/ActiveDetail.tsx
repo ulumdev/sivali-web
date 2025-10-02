@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { FileText, User } from "lucide-react";
+import { FileText, User, Trash2, PencilLine } from "lucide-react";
 import { clsx } from "clsx";
 import { useJobDetail } from "../../hooks/useJobDetail";
 import { useJobWorkers } from "../../hooks/useJobWorkers";
@@ -94,9 +94,29 @@ export default function ActiveDetail() {
               <div className="text-xl font-semibold mb-3">
                 {jobDetail.roleName?.role ?? "-"}
               </div>
-              <span className="px-2 py-2 text-sm font-medium bg-blue-50 text-blue-600 rounded-md border border-blue-600">
-                {jobDetail.isActive ? "Sedang Berlangsung" : "Menunggu Pelamar"}
-              </span>
+              <div className="flex items-center justify-between gap-3">
+                {!workersLoading && workers.length === 0 ? (
+                  <>
+                    <span className="px-2 py-2 text-sm font-medium bg-orange-50 text-orange-600 rounded-md border border-orange-600">
+                      Menunggu lamaran
+                    </span>
+                    <div className="flex gap-2 ml-auto">
+                      <button className="flex items-center justify-center gap-2 px-3 py-2 border rounded-lg text-sm bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 w-full md:w-auto">
+                        <PencilLine className="w-4 h-4" />
+                        <span>Edit</span>
+                      </button>
+                      <button className="flex items-center justify-center gap-2 px-3 py-2 border rounded-lg text-sm hover:bg-gray-100 bg-white w-full md:w-auto">
+                        <Trash2 className="w-4 h-4" />
+                        <span>Hapus</span>
+                      </button>
+                    </div>
+                  </>
+                ) : !workersLoading && workers.length > 0 ? (
+                  <span className="px-2 py-2 text-sm font-medium bg-blue-50 text-blue-600 rounded-md border border-blue-600">
+                    Sedang berlangsung
+                  </span>
+                ) : null}
+              </div>
             </div>
           </div>
 
@@ -105,9 +125,7 @@ export default function ActiveDetail() {
             {/* Header */}
             <div className="flex items-center gap-2 mb-6 justify-start">
               <FileText className="text-gray-600" size={20} />
-              <h3 className="text-md font-semibold">
-                Detail Job Posting
-              </h3>
+              <h3 className="text-md font-semibold">Detail Job Posting</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-6 gap-x-10 justify-start text-left">
@@ -230,27 +248,33 @@ export default function ActiveDetail() {
               <p>Tidak ada kandidat</p>
             )}
             {workers.length > 0 && (
-            <table className="min-w-full border-collapse">
-              <thead className="bg-gray-100 text-left text-sm font-medium bg-white border-b">
-                <tr>
-                  <th className="px-4 py-3">ID</th>
-                  <th className="px-4 py-3">Tanggal</th>
-                  <th className="px-4 py-3">Nama</th>
-                  <th className="px-4 py-3">Role</th>
-                  <th className="px-4 py-3">Alamat</th>
-                  <th className="px-4 py-3">Jenis Kelamin</th>
-                  <th className="px-4 py-3">Status</th>
-                </tr>
-              </thead>
-              <tbody className="text-sm bg-white text-left">
-                {workers.map((w) => (
+              <table className="min-w-full border-collapse">
+                <thead className="bg-gray-100 text-left text-sm font-medium bg-white border-b">
+                  <tr>
+                    <th className="px-4 py-3">ID</th>
+                    <th className="px-4 py-3">Tanggal</th>
+                    <th className="px-4 py-3">Nama</th>
+                    <th className="px-4 py-3">Role</th>
+                    <th className="px-4 py-3">Alamat</th>
+                    <th className="px-4 py-3">Jenis Kelamin</th>
+                    <th className="px-4 py-3">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="text-sm bg-white text-left">
+                  {workers.map((w) => (
                     <tr key={w.id} className="border-t">
                       <td className="px-4 py-2">{w.id}</td>
                       <td className="px-4 py-2">{w.createdAt}</td>
-                      <td className="px-4 py-2">{w.user?.firstName + " " + w.user?.lastName}</td>
+                      <td className="px-4 py-2">
+                        {w.user?.firstName + " " + w.user?.lastName}
+                      </td>
                       <td className="px-4 py-2">{w.isAccepted}</td>
-                      <td className="px-4 py-2">{w.user?.personalInfo?.userAddress?.name}</td>
-                      <td className="px-4 py-2">{w.user?.personalInfo?.gender}</td>
+                      <td className="px-4 py-2">
+                        {w.user?.personalInfo?.userAddress?.name}
+                      </td>
+                      <td className="px-4 py-2">
+                        {w.user?.personalInfo?.gender}
+                      </td>
                       <td className="px-4 py-3">
                         <span
                           className={clsx(
@@ -265,8 +289,8 @@ export default function ActiveDetail() {
                       </td>
                     </tr>
                   ))}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
             )}
           </div>
         </div>

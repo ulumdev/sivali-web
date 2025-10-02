@@ -168,7 +168,11 @@ export default function ActiveJobPosting() {
                         : "bg-blue-100 text-blue-600"
                     )}
                   >
-                    {job.isActive === true ? "Menunggu Pelamar" : "Sedang Berlangsung"}
+                    {job.isActive
+                      ? (job._count?.worker && job._count.worker > 0
+                          ? "Sedang Berlangsung"
+                          : "Menunggu Pelamar")
+                      : "-"}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-center">
