@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+// import { useState } from "react";
+import { useParams } from "react-router-dom";
 import { FileText } from "lucide-react";
-import { clsx } from "clsx";
+// import { clsx } from "clsx";
 import { useTransactionDetail } from "@/hooks/useTransactionDetail";
 
 export default function TransactionDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { transactionDetail, loading, error } = useTransactionDetail(id ?? "");
 
   if (loading) return <p>Loading...</p>;

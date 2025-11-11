@@ -61,14 +61,14 @@ export default function CompanyRegisteredInt() {
   };
 
   // Format tanggal
-  const formatDate = (dateString?: string) => {
-    if (!dateString) return "-";
-    return new Date(dateString).toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-  };
+  // const formatDate = (dateString?: string) => {
+  //   if (!dateString) return "-";
+  //   return new Date(dateString).toLocaleDateString("id-ID", {
+  //     day: "2-digit",
+  //     month: "short",
+  //     year: "numeric",
+  //   });
+  // };
 
   if (loading) return <p className="text-gray-500">Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
