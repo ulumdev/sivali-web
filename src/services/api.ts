@@ -1,25 +1,29 @@
 export async function apiRequest<T>(
-    url: string,
-    options: RequestInit = {}
+  url: string,
+  options: RequestInit = {}
 ): Promise<T> {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-    const res = await fetch(url, {
-        ...options,
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            ...(options.headers || {}),
-        },
-    });
+  // Pastikan tidak double base URL
+  const finalUrl = url.startsWith("http")
+    ? url
+    : `${url.startsWith("/") ? "" : "/"}${url}`;
 
-    if (!res.ok) {
-        throw new Error(`HTTP error! status: ${res.status}`);
-    }
+  const res = await fetch(finalUrl, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      ...(options.headers || {}),
+    },
+  });
 
-    return res.json() as Promise<T>;
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
+
+  return res.json() as Promise<T>;
 }
-
 
 export async function apiGet<T>(url: string): Promise<T> {
   return apiRequest<T>(url, { method: "GET" });
@@ -45,7 +49,6 @@ export async function apiPatch<T>(url: string, body: any): Promise<T> {
     body: JSON.stringify(body),
   });
 }
-
 
 export async function apiDelete<T>(url: string): Promise<T> {
   return apiRequest<T>(url, { method: "DELETE" });

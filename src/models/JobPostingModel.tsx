@@ -1,13 +1,40 @@
 export interface JobLocation {
   id?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
   name?: string | null;
   address?: string | null;
   detail?: string | null;
   lat?: number | null;
   lng?: number | null;
+  jobId?: string | null;
+}
+
+export interface Company {
+  id?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  lastLoginAt?: string | null;
+  name?: string | null;
+  email?: string | null;
+  companyLogoUrl?: string | null;
+  isActive: boolean;
+  isVerified: boolean;
+  balance: string;
+  lockedBalance: string;
+  blockReason?: string | null;
+  isRevised?: boolean;
+  isRevision?: boolean;
+  isSuspended?: boolean;
+  npwpRejectionReason?: string | null;
+  suspendReason?: string | null;
+  suspendUntil?: string | null;
 }
 
 export interface Role {
+  id?: string | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
   role?: string | null;
 }
 
@@ -43,9 +70,13 @@ export interface JobPostingModel {
   isActive?: boolean | null;
   description?: string[] | null;
   workerNumber?: number | null;
+  companyId?: string | null;
+  roleId?: string | null;
+  initialLockedAmount?: string | null;
   paymentStatus?: string | null;
   totalPaid?: string | null;
   jobLocation?: JobLocation | null;
+  company?: Company | null;
   role?: Role | null;
   _count?: Count | null;
   worker?: Worker[] | null;

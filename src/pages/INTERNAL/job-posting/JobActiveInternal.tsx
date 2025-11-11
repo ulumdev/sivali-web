@@ -1,25 +1,21 @@
-// import React from "react";
 import { useState } from "react";
 import {
   Search,
   Filter,
   DownloadCloud,
-  Plus,
   Eye,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import clsx from "clsx";
-
-import { useActiveJobPostings } from "../../hooks/useJobPosting";
-import type { JobPostingModel } from "../../models/JobPostingModel";
+import { useInternalActiveJobPostings } from "@/hooks/internal/useJobPostingInternal";
+import type { JobPostingModel } from "../../../models/JobPostingModel";
 import { useNavigate } from "react-router-dom";
 
-export default function ActiveJobPosting() {
-
+export default function JobActiveInternal() {
   const navigate = useNavigate();
+  const { jobsActive, loading, error } = useInternalActiveJobPostings();
 
-  const { jobsActive, loading, error } = useActiveJobPostings();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("Pilih Status");
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,10 +30,7 @@ export default function ActiveJobPosting() {
       (statusFilter === "Menunggu Pelamar" && job.isActive === true) ||
       (statusFilter === "Sedang Berlangsung" && job.isActive === false);
 
-    return (
-      role.toLowerCase().includes(search.toLowerCase()) &&
-      statusMatch
-    );
+    return role.toLowerCase().includes(search.toLowerCase()) && statusMatch;
   });
 
   // Pagination
@@ -94,7 +87,7 @@ export default function ActiveJobPosting() {
         <div className="relative w-full md:w-1/3">
           <input
             type="text"
-            placeholder="Cari role"
+            placeholder="Cari role atau company"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
@@ -129,13 +122,6 @@ export default function ActiveJobPosting() {
             <span>Export</span>
             <DownloadCloud className="w-4 h-4" />
           </button>
-
-          <button 
-          onClick={() => navigate("/job-postings/create")}
-          className="flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 w-full md:w-auto">
-            <span>Buat Job Posting</span>
-            <Plus className="w-4 h-4" />
-          </button>
         </div>
       </div>
 
@@ -145,10 +131,12 @@ export default function ActiveJobPosting() {
           <thead className="bg-gray-100 text-left text-sm font-medium bg-white border-b">
             <tr>
               <th className="px-4 py-3">ID</th>
-              <th className="px-4 py-3">Tanggal</th>
+              <th className="px-4 py-3">Tanggal Posting</th>
+              <th className="px-4 py-3">Perusahaan</th>
               <th className="px-4 py-3">Role</th>
-              <th className="px-4 py-3">Jumlah Pekerja</th>
+              {/* <th className="px-4 py-3">Jumlah Pekerja</th> */}
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3">Tanggal Kerja</th>
               <th className="px-4 py-3 text-center">Aksi</th>
             </tr>
           </thead>
@@ -156,29 +144,54 @@ export default function ActiveJobPosting() {
             {paginatedData.map((job: JobPostingModel) => (
               <tr key={job.id} className="hover:bg-indigo-50">
                 <td className="px-4 py-3 whitespace-nowrap">{job.id ?? "-"}</td>
-                <td className="px-4 py-3 whitespace-nowrap">{job.createdAt ?? "-"}</td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                    {job.createdAt
+                    ? new Date(job.createdAt).toLocaleString("id-ID", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                      })
+                    : "-"}
+                </td>
+                <td className="px-4 py-3">{job.company?.name ?? "-"}</td>
                 <td className="px-4 py-3">{job.role?.role ?? "-"}</td>
-                <td className="px-4 py-3">{job.workerNumber ?? "-"}</td>
+                {/* <td className="px-4 py-3">{job.workerNumber ?? "-"}</td> */}
                 <td className="px-4 py-3">
-                    <span
+                  <span
                     className={clsx(
                       "px-2 py-1 rounded text-xs font-medium",
                       job._count?.worker && job._count.worker > 0
-                      ? "bg-blue-100 text-blue-600"
-                      : "bg-orange-100 text-orange-600"
+                        ? "bg-blue-100 text-blue-600"
+                        : "bg-orange-100 text-orange-600"
                     )}
-                    >
+                  >
                     {job.isActive
-                      ? (job._count?.worker && job._count.worker > 0
+                      ? job._count?.worker && job._count.worker > 0
                         ? "Sedang Berlangsung"
-                        : "Menunggu Pelamar")
+                        : "Menunggu Pelamar"
                       : "-"}
-                    </span>
+                  </span>
+                </td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  {job.shiftIn
+                  ? new Date(job.shiftIn).toLocaleDateString("id-ID", {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                    })
+                  : "-"}
                 </td>
                 <td className="px-4 py-3 text-center">
-                  <button 
-                  onClick={() => navigate(`/job-posting/active/${job.id}`)}
-                  className="p-1 hover:bg-gray-100 rounded">
+                  <button
+                    onClick={() =>
+                      navigate(`/internal/job-posting/active/${job.id}`)
+                    }
+                    className="p-1 hover:bg-gray-100 rounded"
+                  >
                     <Eye className="h-4 w-4 text-gray-500" />
                   </button>
                 </td>
@@ -186,7 +199,7 @@ export default function ActiveJobPosting() {
             ))}
             {paginatedData.length === 0 && (
               <tr>
-                <td colSpan={6} className="text-center py-6 text-gray-500">
+                <td colSpan={7} className="text-center py-6 text-gray-500">
                   Tidak ada data
                 </td>
               </tr>

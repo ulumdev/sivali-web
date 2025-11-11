@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import { FileText, User } from "lucide-react";
+import { FileText, User, Building2 } from "lucide-react";
 import { clsx } from "clsx";
-import { useJobDetail } from "../../hooks/useJobDetail";
-import { useJobWorkers } from "../../hooks/useJobWorkers";
+import { useJobDetail } from "../../../hooks/useJobDetail";
+import { useJobWorkers } from "../../../hooks/useJobWorkers";
 
-export default function ExpiredDetail() {
+export default function JobDetailInternal() {
   const { id } = useParams();
   const { jobDetail, loading, error } = useJobDetail(id ?? "");
   const {
@@ -54,15 +54,46 @@ export default function ExpiredDetail() {
               <div className="text-xl font-semibold mb-3">
                 {jobDetail.roleName?.role ?? "-"}
               </div>
-              <span className="px-2 py-2 text-sm font-medium bg-red-100 text-red-600 rounded-md border border-red-600">
-                {jobDetail.isActive ? "Expired" : "Aktif"}
-              </span>
+              <div className="flex items-center justify-between gap-3">
+                {!workersLoading && workers.length === 0 ? (
+                  <span className="px-2 py-2 text-sm font-medium bg-orange-50 text-orange-600 rounded-md border border-orange-600">
+                    Menunggu lamaran
+                  </span>
+                ) : !workersLoading && workers.length > 0 ? (
+                  <span className="px-2 py-2 text-sm font-medium bg-blue-50 text-blue-600 rounded-md border border-blue-600">
+                    Sedang berlangsung
+                  </span>
+                ) : null}
+              </div>
             </div>
           </div>
 
-          {/* Detail jobDetail Posting */}
+          {/* Company Info */}
           <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
-            {/* Header */}
+            <div className="flex items-center gap-2 mb-6 justify-start">
+              <Building2 className="text-gray-600" size={20} />
+              <h3 className="text-md font-semibold">Informasi Company</h3>
+            </div>
+
+            <div className="flex items-center gap-4">
+              {jobDetail.companyLogo && (
+                <img
+                  src={jobDetail.companyLogo}
+                  alt="Company Logo"
+                  className="w-16 h-16 rounded-lg object-cover border"
+                />
+              )}
+              <div>
+                <p className="text-sm text-gray-500 mb-1">Nama Company</p>
+                <p className="text-sm font-medium">
+                  {jobDetail.companyName ?? "-"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Detail Job Posting */}
+          <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
             <div className="flex items-center gap-2 mb-6 justify-start">
               <FileText className="text-gray-600" size={20} />
               <h3 className="text-md font-semibold">Detail Job Posting</h3>
@@ -104,10 +135,8 @@ export default function ExpiredDetail() {
               </ul>
             </div>
 
-            {/* Garis pembatas */}
             <hr className="my-6" />
             <div className="flex items-center gap-2 mb-6 justify-start">
-              {/* <FileText className="text-gray-600" size={20} /> */}
               <h3 className="text-md font-semibold">Alamat</h3>
             </div>
 
@@ -118,7 +147,7 @@ export default function ExpiredDetail() {
                 <p className="text-sm text-gray-500 mb-1 mt-4">
                   Nama Jalan, Kecamatan, Kota
                 </p>
-                <p className="text-sm">{jobDetail.alamat?.namaAlamat ?? "-"}</p>
+                <p className="text-sm">{jobDetail.alamat?.alamat ?? "-"}</p>
                 <p className="text-sm text-gray-500 mb-1 mt-4">Detail Alamat</p>
                 <p className="text-sm">
                   {jobDetail.alamat?.detailAlamat ?? "-"}
@@ -145,7 +174,6 @@ export default function ExpiredDetail() {
 
           {/* Data PIC */}
           <div className="bg-white rounded-xl shadow p-6 border border-gray-200">
-            {/* Header */}
             <div className="flex items-center gap-2 mb-6 justify-start">
               <User className="text-gray-600" size={20} />
               <h2 className="text-md font-semibold">Data PIC</h2>
@@ -153,12 +181,8 @@ export default function ExpiredDetail() {
             {jobDetail.dataPIC ? (
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-y-6 gap-x-10 justify-start text-left">
                 <div>
-                  <p className="text-sm text-gray-500 mb-1">Nama Depan</p>
+                  <p className="text-sm text-gray-500 mb-1">Nama PIC</p>
                   <p className="text-sm">{jobDetail.dataPIC.namaPIC}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 mb-1">Nama Belakang</p>
-                  <p className="text-sm">{jobDetail.dataPIC.namaPIC ?? "-"}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500 mb-1">Jabatan</p>
@@ -194,7 +218,7 @@ export default function ExpiredDetail() {
                     <th className="px-4 py-3">ID</th>
                     <th className="px-4 py-3">Tanggal</th>
                     <th className="px-4 py-3">Nama</th>
-                    <th className="px-4 py-3">Role</th>
+                    <th className="px-4 py-3">Email</th>
                     <th className="px-4 py-3">Alamat</th>
                     <th className="px-4 py-3">Jenis Kelamin</th>
                     <th className="px-4 py-3">Status</th>
@@ -205,17 +229,25 @@ export default function ExpiredDetail() {
                     <tr key={w.id} className="border-t">
                       <td className="px-4 py-2">{w.id}</td>
                       <td className="px-4 py-2">{w.createdAt}</td>
-                      <td className="px-4 py-2">{w.user?.firstName + " " + w.user?.lastName}</td>
-                      <td className="px-4 py-2">{w.isAccepted}</td>
-                      <td className="px-4 py-2">{w.user?.personalInfo?.userAddress?.name}</td>
-                      <td className="px-4 py-2">{w.user?.personalInfo?.gender}</td>
+                      <td className="px-4 py-2">
+                        {w.user?.firstName + " " + w.user?.lastName}
+                      </td>
+                      <td className="px-4 py-2">{w.user?.email}</td>
+                      <td className="px-4 py-2">
+                        {w.user?.personalInfo?.userAddress?.name}
+                      </td>
+                      <td className="px-4 py-2">
+                        {w.user?.personalInfo?.gender}
+                      </td>
                       <td className="px-4 py-3">
                         <span
                           className={clsx(
                             "px-2 py-1 rounded text-xs font-medium",
-                            w.status === "Waiting List"
+                            w.status === "WAITING"
                               ? "bg-orange-100 text-orange-600"
-                              : "bg-blue-100 text-blue-600"
+                              : w.status === "CONFIRMED"
+                              ? "bg-blue-100 text-blue-600"
+                              : "bg-red-100 text-red-600"
                           )}
                         >
                           {w.status}

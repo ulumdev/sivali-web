@@ -8,18 +8,6 @@ export default function Layout() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // return (
-  //   <div className="flex h-screen overflow-hidden">
-  //     <Sidebar />
-  //     <div className="flex-1 flex flex-col">
-  //       <Topbar />
-  //       <main className="flex-1 p-6 overflow-auto bg-white">
-  //         <Outlet /> {/* tempat render halaman sesuai route */}
-  //       </main>
-  //     </div>
-  //   </div>
-  // );
-
   return (
     <div className="h-screen bg-white">
       {/* Mobile sidebar (drawer) */}

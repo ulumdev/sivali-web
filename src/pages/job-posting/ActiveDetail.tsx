@@ -5,46 +5,6 @@ import { clsx } from "clsx";
 import { useJobDetail } from "../../hooks/useJobDetail";
 import { useJobWorkers } from "../../hooks/useJobWorkers";
 
-// Contoh dummy kandidat
-// const candidates = [
-//   {
-//     id: "AD39",
-//     tanggal: "25 Desember 2024",
-//     nama: "Budi Santoso",
-//     role: "Bartender",
-//     alamat: "Jl. Raya No. 1, Surabaya",
-//     jenisKelamin: "Laki-laki",
-//     status: "Belum Konfirmasi",
-//   },
-//   {
-//     id: "AD40",
-//     tanggal: "25 Desember 2024",
-//     nama: "Siti Aminah",
-//     role: "Bartender",
-//     alamat: "Jl. Raya No. 2, Surabaya",
-//     jenisKelamin: "Perempuan",
-//     status: "Waiting List",
-//   },
-//   {
-//     id: "AD41",
-//     tanggal: "25 Desember 2024",
-//     nama: "Ahmad Fauzi",
-//     role: "Bartender",
-//     alamat: "Jl. Raya No. 2, Surabaya",
-//     jenisKelamin: "Laki-laki",
-//     status: "Waiting List",
-//   },
-//   {
-//     id: "AD42",
-//     tanggal: "25 Desember 2024",
-//     nama: "Sari",
-//     role: "Bartender",
-//     alamat: "Jl. Raya No. 2, Surabaya",
-//     jenisKelamin: "Perempuan",
-//     status: "Waiting List",
-//   },
-// ];
-
 export default function ActiveDetail() {
   const { id } = useParams();
   const { jobDetail, loading, error } = useJobDetail(id ?? "");
