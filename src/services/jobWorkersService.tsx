@@ -58,3 +58,50 @@ export async function getJobWorkers(jobId: string): Promise<JobWorker[]> {
   const res = await apiRequest<ApiResponse<JobWorker[]>>(`/api/v1/jobs/${jobId}/workers`);
   return res.data;
 }
+
+interface WorkerActionResponse {
+  message: string;
+  ok: boolean;
+}
+
+interface WorkerActionPayload {
+  workerId: string;
+}
+
+/**
+ * Approve a worker/candidate
+ * PATCH /api/v1/companies/approve-worker
+ */
+export async function approveWorker(workerId: string): Promise<WorkerActionResponse> {
+  const payload: WorkerActionPayload = { workerId };
+  
+  return apiRequest<WorkerActionResponse>(
+    "/api/v1/companies/approve-worker",
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+}
+
+/**
+ * Reject a worker/candidate
+ * PATCH /api/v1/companies/reject-worker
+ */
+export async function rejectWorker(workerId: string): Promise<WorkerActionResponse> {
+  const payload: WorkerActionPayload = { workerId };
+  
+  return apiRequest<WorkerActionResponse>(
+    "/api/v1/companies/reject-worker",
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    }
+  );
+}
