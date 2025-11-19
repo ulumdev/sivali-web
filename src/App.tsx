@@ -45,6 +45,10 @@ import BannerList from "./pages/INTERNAL/banner/BannerList";
 import BannerCreate from "./pages/INTERNAL/banner/BannerCreate";
 import BannerEdit from "./pages/INTERNAL/banner/BannerEdit";
 import HistoryDetail from "./pages/INTERNAL/transaction/HistoryDetail";
+import EmployeeDetailVerified from "./pages/INTERNAL/employee/EmployeeDetailVerified";
+import EmployeeDetailRegistered from "./pages/INTERNAL/employee/EmployeeDetailRegistered";
+import EmployeeDetailSuspended from "./pages/INTERNAL/employee/EmployeeDetailSuspended";
+import EmployeeDetailBlocked from "./pages/INTERNAL/employee/EmployeeDetailBlocked";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -281,10 +285,26 @@ function App() {
             }
           />
           <Route
+            path="/internal/employees/registered/:id"
+            element={
+              <ProtectedRoute allowedRoles={["internal"]}>
+                <EmployeeDetailRegistered />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/internal/employees/verified"
             element={
               <ProtectedRoute allowedRoles={["internal"]}>
                 <EmployeeVerified />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/internal/employees/verified/:id"
+            element={
+              <ProtectedRoute allowedRoles={["internal"]}>
+                <EmployeeDetailVerified />
               </ProtectedRoute>
             }
           />
@@ -297,6 +317,14 @@ function App() {
             }
           />
           <Route
+            path="/internal/employees/suspended/:id"
+            element={
+              <ProtectedRoute allowedRoles={["internal"]}>
+                <EmployeeDetailSuspended />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/internal/employees/blocked"
             element={
               <ProtectedRoute allowedRoles={["internal"]}>
@@ -304,8 +332,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-
-          
+          <Route
+            path="/internal/employees/blocked/:id"
+            element={
+              <ProtectedRoute allowedRoles={["internal"]}>
+                <EmployeeDetailBlocked />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Transaction */}
           <Route

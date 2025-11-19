@@ -130,8 +130,24 @@ export default function CompanyRegisteredInt() {
                   {company.companyProfile?.industry ?? "-"}
                 </td>
                 <td className="px-4 py-3">
-                  <span className="px-2 py-1 rounded text-xs font-medium bg-orange-100 text-orange-600">
-                    Terdaftar
+                  <span
+                  className={`px-2 py-1 rounded text-xs font-medium ${
+                    company.companyVerificationFile?.npwpStatus === "PROCESS" &&
+                    company.npwpRejectionReason === null
+                    ? "bg-red-100 text-red-600"
+                    : company.companyVerificationFile?.npwpStatus === "FAIL" &&
+                      company.npwpRejectionReason !== null
+                    ? "bg-orange-100 text-orange-600"
+                    : "bg-green-100 text-green-600"
+                  }`}
+                  >
+                  {company.companyVerificationFile?.npwpStatus === "PROCESS" &&
+                  company.npwpRejectionReason === null
+                    ? "Menunggu Tindakan"
+                    : company.companyVerificationFile?.npwpStatus === "FAIL" &&
+                    company.npwpRejectionReason !== null
+                    ? "Revisi"
+                    : "Terdaftar"}
                   </span>
                 </td>
                 {/* <td className="px-4 py-3">{company.job?.length ?? 0} Jobs</td> */}

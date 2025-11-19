@@ -115,7 +115,7 @@ export default function EmployeeVerified() {
                 </td>
                 <td className="px-4 py-3 whitespace-nowrap">{w.lastLoginAt ? formatDate(w.lastLoginAt) : "-"}</td>
                 <td className="px-4 py-3 text-center">
-                  <button onClick={() => navigate(`/internal/employees/${w.id}`)} className="p-1 hover:bg-gray-100 rounded">
+                  <button onClick={() => navigate(`/internal/employees/verified/${w.id}`)} className="p-1 hover:bg-gray-100 rounded">
                     <Eye className="h-4 w-4 text-gray-500" />
                   </button>
                 </td>

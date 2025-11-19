@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { CompanyDetailModel } from "@/models/internal/CompanyDetailModel";
 import { getCompanyIntDetail } from "@/services/internal/companyIntDetailService";
 
@@ -7,8 +7,8 @@ export function useCompanyIntDetail(companyId?: string) {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
-    useEffect(() => {
-    let isMounted = true;
+     // Extract fetcher logic into separate function
+  const fetchCompanyDetail = useCallback(async () => {
     if (!companyId) {
       setError("Company ID tidak ditemukan");
       setLoading(false);
@@ -16,25 +16,27 @@ export function useCompanyIntDetail(companyId?: string) {
     }
 
     setLoading(true);
-    getCompanyIntDetail(companyId)
-      .then((data) => {
-        if (isMounted) {
-          setCompanyDetail(data);
-        }
-      })
-      .catch((err: any) => {
-        if (isMounted) {
-          setError(err?.message ?? "Gagal mengambil data company");
-        }
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
+    setError(null);
 
-    return () => {
-      isMounted = false;
-    };
+    try {
+      const data = await getCompanyIntDetail(companyId);
+      setCompanyDetail(data);
+    } catch (err: any) {
+      setError(err?.message ?? "Gagal mengambil data company");
+    } finally {
+      setLoading(false);
+    }
   }, [companyId]);
 
-  return { companyDetail, loading, error };
+  // Initial fetch on mount
+  useEffect(() => {
+    fetchCompanyDetail();
+  }, [fetchCompanyDetail]);
+
+  // Refetch function to be called manually
+  const refetch = useCallback(() => {
+    return fetchCompanyDetail();
+  }, [fetchCompanyDetail]);
+
+  return { companyDetail, loading, error, refetch };
 }

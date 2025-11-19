@@ -2,7 +2,7 @@ import { apiPost, apiRequest } from "./api";
 import type { JobPostingModel } from "../models/JobPostingModel";
 
 export interface JobPostingPayload {
-  role: number;
+  role: string;
   salary: number;
   workingDate: string; // ISO string
   shiftIn: string; // "HH:mm"
